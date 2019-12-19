@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "VnetName": {
+           "type": "string",
+           "metadata": {
+                "description": "description"
+            }
+        },        
+    },
+    "variables": {
+        "subnet1": "[concat(parameters('VnetName'),'-','Subnet1')]",
+        "subnet2": "[concat(parameters('VnetName'),'-','Subnet2')]",
+        "VnetAddressSpace":"192.168.10.0/24",
+        "Subnet1Address":"192.168.10.0/27",
+        "Subnet2Address":"192.168.10.32/27"
+    },
+    "resources": [
+        {
+            "name": "[parameters('VnetName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "[parameters('VnetName')]"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                       "[variables('VnetAddressSpace')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnet1')]",
+                        "properties": {
+                            "addressPrefix": "[variables('Subnet1Address')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('subnet2')]",
+                        "properties": {
+                            "addressPrefix": "[variables('Subnet2Address')]"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "Subnet1":{
+            "type":"String",
+            "value": "[variables('subnet1')]"
+        },
+        "Subnet2":{
+            "type":"String",
+            "value": "[variables('subnet2')]"
+        }
+    },
+    "functions": []
+}
