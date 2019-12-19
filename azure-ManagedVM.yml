@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Private Pay as You Go (Dont Touch)(e774f2ff-8630-47cd-991a-e53d58ef7b2b)'
+    subscriptionId: 'e774f2ff-8630-47cd-991a-e53d58ef7b2b'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'DeployTest'
+    location: 'West US 2'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://github.com/matemohanish/IACPublic/blob/master/%5BW%5DVM-ManagedDisk.json'
+    csmParametersFileLink: 'https://github.com/matemohanish/IACPublic/blob/master/%5BW%5DVM-ManagedDisk-parameters.json'
+    deploymentMode: 'Incremental'
