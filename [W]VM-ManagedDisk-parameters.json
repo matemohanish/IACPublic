@@ -16,17 +16,6 @@
         },
         "subnetname": {
             "value": "PSCoreVnet-Subnet1"
-        },
-        "domainadminPassword": {
-            "reference": {
-                "keyVault": {
-                  "id": "/subscriptions/93b268cb-3dd0-4240-bba0-217228c4293f/resourceGroups/RG01/providers/Microsoft.KeyVault/vaults/m2keyvault"
-                },
-                "secretName": "m2acc"
-              }
-        },
-        "domainadminuser": {
-            "value": "pscore.com\\m2acc"
         }
     }
 }
