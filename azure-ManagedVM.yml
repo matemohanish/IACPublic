@@ -20,6 +20,6 @@ steps:
     resourceGroupName: 'DeployTest'
     location: 'West US 2'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://github.com/matemohanish/IACPublic/blob/master/%5BW%5DVM-ManagedDisk.json'
-    csmParametersFileLink: 'https://github.com/matemohanish/IACPublic/blob/master/%5BW%5DVM-ManagedDisk-parameters.json'
+    csmFileLink: 'https://github.com/matemohanish/IACPublic/blob/master/VM-ManagedDisk.json'
+    csmParametersFileLink: 'https://github.com/matemohanish/IACPublic/blob/master/VM-ManagedDisk-parameters.json'
     deploymentMode: 'Incremental'
