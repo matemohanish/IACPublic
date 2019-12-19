@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vmname": {
-            "value": "NewPScoreMEM2"
+            "value": "NewPScoreMEM3"
         },
         "Production": {
             "value": "yes"
