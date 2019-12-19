@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "VnetName": {
-            "value": "NewPScoreMEM2"
+            "value": "PSCoreVnet"
         }
     }
 }
