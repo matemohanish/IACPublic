@@ -11,7 +11,7 @@
          "Production": {
             "type": "string",
             "metadata": {
-                 "description": "description"
+                 "description": "description1"
              },
              "allowedValues": [
                                "yes",
