@@ -1,6 +1,6 @@
 ﻿
 Connect-AzAccount
-Set-AzContext -SubscriptionId b69c2a11-bd8a-4349-b9d9-1c55bd839199
+Set-AzContext -SubscriptionId <Subcription ID>
 
 $a =Get-AzConsumptionUsageDetail -StartDate (Get-Date).AddDays(-18) -EndDate (Get-Date)  | group -Property InstanceName | Select Name ,@{name = "Usage"; E={$_.Group.pretaxcost}} -first 10
 
