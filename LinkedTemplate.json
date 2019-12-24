@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [
+        {
+            "name": "LinkedtemplateStorageAccount",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/matemohanish/IACPublic/master/LT-StorageAccount.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parametersLink":{
+                    "contentVersion": "1.0.0.0",
+                    "uri": "https://raw.githubusercontent.com/matemohanish/IACPublic/master/LT-StorageAccount-Parameters.json"
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
