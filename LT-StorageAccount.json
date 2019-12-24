@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storageaccounts": {
+        "storageaccountname": {
            "type": "string",
            "metadata": {
                 "description": "description"
@@ -12,12 +12,12 @@
     "variables": {},
     "resources": [
         {
-            "name": "[parameters(storageaccounts)]",
+            "name": "[parameters('storageaccountname')]",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-04-01",
             "location": "[resourceGroup().location]",
             "tags": {
-                "displayName": "[parameters(storageaccounts)]"
+                "displayName": "[parameters('storageaccountname')]"
             },
             "sku":{
                 "name":"Standard_LRS"
