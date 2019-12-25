@@ -25,5 +25,11 @@
             "kind":"StorageV2"
         }    
     ],
-    "outputs": {}
+    "outputs": {
+        "messagefromlinkedtemplate":{
+            "type":"string",
+            "value": "[reference(parameters('storageaccountname')).primaryEndpoints.blob]"
+        }
+        
+    }
 }
