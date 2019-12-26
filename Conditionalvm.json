@@ -1,0 +1,194 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmname": {
+           "type": "string",
+           "metadata": {
+                "description": "description"
+            }
+        },
+        "Production": {
+           "type": "string",
+           "metadata": {
+                "description": "Select the Environment the vm is for"
+            },
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "Platform": {
+           "type": "string",
+           "metadata": {
+                "description": "Select the OS type to be deployed"
+            },
+            "allowedValues": [
+                "2016",
+                "2019"
+            ],
+            "defaultValue": "Windows"
+        },
+        "LocalAdmin": {
+           "type": "string",
+           "metadata": {
+                "description": "LocalAdmin Account"
+            },
+            "defaultValue": "m2admin"
+        },
+        "LocalAdminPwd": {
+           "type": "string",
+           "metadata": {
+                "description": "description"
+            },
+            "defaultValue": "Intel@132456789"
+        },
+        "vnetrg": {
+           "type": "string",
+           "metadata": {
+                "description": "description"
+            }
+        }
+
+    },
+    "variables": {
+        "vNetName": "PSCoreVnet",
+        "subnetname":"PSCoreVnet-Subnet1",
+        "vnetid":"[resourceid(parameters('vnetrg'),'Microsoft.Networks/VirtualNetworks',variables('vNetName'))]",
+        "subnetref":"[concat(variables('vnetid'),'/subnets/',variables('subnetname'))]",
+        "windowsoffer":"WindowsServer",
+        "windowspublisher":"MicrosoftWindowsServer",
+        "windows16sku":"2016-Datacenter",
+        "windows19sku":"2019-Datacenter",
+        "av":"[concat(parameters('vmname'),'-','av')]",
+        "availibilitysetid":{
+              "id" : "[resourceID('Microsoft.Compute/availibilitysets',variables('av'))]"
+        },
+        "vnicname":"[concat(parameters('vmname'),'-','nic')]",
+        "storageaccountname":"[toLower(concat(parameters('vmname'),'stgaccount'))]"
+
+
+    },
+    "resources": [
+        {
+            "name": "[variables('storageaccountname')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "[variables('storageaccountname')]"
+            },
+            "kind":"StorageV2",
+            "sku":{
+                "name":"Standard_LRS"
+            }
+        },
+        {
+            
+            "name": "[variables('av')]",
+            "type": "Microsoft.Compute/availabilitySets",
+            "apiVersion": "2019-07-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "[variables('av')]"
+            },
+            "properties": {
+                "platformFaultDomainCount": 2,
+                "platformUpdateDomainCount":3
+            },
+            "sku":{"name":"Aligned"}
+        },
+        {
+            "name": "[variables('vnicname')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                
+            ],
+            "tags": {
+                "displayName": "[variables('vnicname')]"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipConfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('subnetref')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('vmname')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2017-03-30",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+               "[resourceId('Microsoft.Storage/storageAccounts',variables('storageaccountname'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces',variables('vnicname'))]"
+            ],
+            "tags": {
+                "displayName": "[parameters('vmname')]"
+            },
+            "properties": {
+                "availabilitySet":{
+                    "id": "[resourceId('Microsoft.compute/availabilitySets', variables('av'))]" 
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_A2"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('vmname')]",
+                    "adminUsername": "[parameters('LocalAdmin')]",
+                    "adminPassword": "[Parameters('LocalAdminPwd')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "[if(equals(parameters('Platform'),'2016'), variables('windows16sku'), variables('windows19sku'))]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[concat(parameters('vmname'),'-osdisk')]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vnicname'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageaccountname')), '2018-11-01').primaryEndpoints.blob]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+
+        "AvsetID": {
+           "type": "string",
+           "value": "[variables('av')]"
+        },
+        "Storageaccount": {
+           "type": "string",
+           "value": "[variables('storageaccountname')]"
+        },
+        "NetworkCard": {
+           "type": "string",
+           "value": "[variables('vnicname')]"
+        }
+    }
+}
