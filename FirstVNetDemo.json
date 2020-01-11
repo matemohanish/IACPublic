@@ -21,7 +21,11 @@
             }
         }
     },
-    "variables": {},
+    "variables": {
+        "AddressPrerfix": "10.0.0.0/16",
+        "Subnet1Prefix": "10.0.0.0/24",
+        "Subnet2Prefix": "10.0.1.0/24"
+    },
     "resources": [
         {
             "name": "[parameters('vnetname')]",
@@ -34,20 +38,20 @@
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.0.0.0/16"
+                        "[variables('AddressPrerfix')]"
                     ]
                 },
                 "subnets": [
                     {
                         "name": "[parameters('subnet1')]",
                         "properties": {
-                            "addressPrefix": "10.0.0.0/24"
+                            "addressPrefix": "[variables('Subnet1Prefix')]"
                         }
                     },
                     {
                         "name": "[parameters('subnet2')]",
                         "properties": {
-                            "addressPrefix": "10.0.1.0/24"
+                            "addressPrefix": "[variables('Subnet2Prefix')]"
                         }
                     }
                 ]
