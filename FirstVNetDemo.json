@@ -1,0 +1,65 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetname": {
+           "type": "string",
+           "metadata": {
+                "description": "Virtual Network"
+            }
+        },
+        "subnet1": {
+           "type": "string",
+           "metadata": {
+                "description": "This is for the name of Subne1"
+            }
+        },
+        "subnet2": {
+           "type": "string",
+           "metadata": {
+                "description": "This is for the name of Subne2"
+            }
+        }
+    },
+    "variables": {
+        "AddressPrerfix": "10.0.0.0/16",
+        "Subnet1Prefix": "10.0.0.0/24",
+        "Subnet2Prefix": "10.0.1.0/24"
+    },
+    "resources": [
+        {
+            "name": "[parameters('vnetname')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "[parameters('vnetname')]"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('AddressPrerfix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnet1')]",
+                        "properties": {
+                            "addressPrefix": "[variables('Subnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('subnet2')]",
+                        "properties": {
+                            "addressPrefix": "[variables('Subnet2Prefix')]"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {},
+    "functions": []
+}
+
+
